@@ -1,3 +1,4 @@
+""" Downloads and/or loads the model, tokenizer"""
 from transformers import BertPreTrainedModel, BertTokenizer
 import config
 import os
