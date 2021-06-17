@@ -3,6 +3,7 @@ import config
 import sys
 import shutil
 import zipfile
+from datasetbuilder import DatasetBuilder
 
 if not os.path.isfile(os.path.join(config.DATA_PATH, config.DATASET_TITLE)):
     os.system('kaggle datasets download -d' + config.DATASET)
@@ -14,3 +15,6 @@ if not os.path.isfile(os.path.join(config.DATA_PATH, config.DATASET_TITLE)):
             zip_data.extractall(config.DATA_PATH)
 else:
     sys.stdout.write('Skipping downloading as data already exists')
+
+files = ['True.csv', 'Fake.csv']
+prod = DatasetBuilder('data', files)
