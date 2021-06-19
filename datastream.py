@@ -1,4 +1,3 @@
-import numpy
 import torch
 from torch.utils.data import Dataset, DataLoader, IterableDataset
 import pandas as pd
