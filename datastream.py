@@ -1,8 +1,8 @@
 import torch
-from torch.utils.data import Dataset, DataLoader, IterableDataset
+from torch.utils.data import Dataset, IterableDataset
 import pandas as pd
 import os
-from itertools import cycle
+#from itertools import cycle
 
 
 class NewsProducer(Dataset):
