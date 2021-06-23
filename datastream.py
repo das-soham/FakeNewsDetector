@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset, IterableDataset
 import pandas as pd
 import os
-#from itertools import cycle
+
 
 
 class NewsProducer(Dataset):
@@ -17,7 +17,7 @@ class NewsProducer(Dataset):
             item = item.tolist()
         news = self.data.loc[item, 'text']
         label = self.data.loc[item, 'Label']
-        return news, label
+        return (news, label)
 
 
 class IterableNewsProducer(IterableDataset):
