@@ -3,8 +3,6 @@ import config
 import sys
 import shutil
 import zipfile
-from transformers import BertPreTrainedModel, BertTokenizer
-import json
 TOKENIZER_DOWNLOADER = False
 
 def data_load():
@@ -19,20 +17,3 @@ def data_load():
     else:
         sys.stdout.write('Skipping downloading as data already exists')
 
-'''
-def model_load():
-    if os.path.isfile('model/pytorch_model.bin'):
-        model = BertPreTrainedModel.from_pretrained('model/')
-    else:
-        model = BertPreTrainedModel.from_pretrained(config.MODEL_NAME)
-        model.save_pretrained(config.MODEL_PATH)
-    if os.path.isfile('model/tokenizer_config.json'):
-        config_file = open('model/tokenizer_config.json')
-        config_data = config_file.readline()
-        config_dict = json.loads(config_data)
-        if os.path.isfile(config_dict['tokenizer_file']):
-            tokenizer = BertTokenizer.from_pretrained('model/')
-    else:
-        tokenizer = BertTokenizer.from_pretrained(config.MODEL_NAME)
-        tokenizer.save_pretrained(config.MODEL_PATH)
-'''
