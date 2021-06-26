@@ -4,14 +4,17 @@ from transformers import AutoModelForSequenceClassification, AdamW, AutoTokenize
 import config
 from dataset import NewsProducer
 from torch.utils.data import DataLoader
-from tokenizer import  Tokenizer
+from tokenizer import Tokenizer
+
 
 
 class SequenceModel(nn.Module):
     def __init__(self):
         super(SequenceModel, self).__init__()
         self.model = AutoModelForSequenceClassification.from_pretrained(config.MODEL_PATH)
-        self.optim = AdamW(self.model.parameters())
+        self.model.classifier = nn.Linear(self.model.bert.pooler.dense.out_features, 1, True)
+        self.model.config.num_labels = 1
+        self.optimizer = AdamW(self.model.parameters())
         self.loss_fn = torch.nn.BCEWithLogitsLoss()
         self.loss_statistic = None
 
@@ -39,15 +42,18 @@ training_dataset = NewsProducer('~/FakeNewsDetector/data', 'Train.csv')
 train_loader = DataLoader(training_dataset, batch_size=10, shuffle=True, num_workers=0)
 tk_zer = Tokenizer()
 seq_model = SequenceModel()
+#print((seq_model.model.bert.pooler.dense.out_features))
+#print((seq_model.model))
+#print(seq_model.model.config.num_labels)
+
 for training_iter in range(config.TRAINING_EPOCHS):
     for batch in train_loader:
         news = list(batch[0])
         labels = list(batch[1])
         assert len(news) == len(labels)
         tokens_batch = tk_zer.tokenizer(news, padding=True, truncation=True, return_tensors="pt")
-        tokens_batch["labels"] = torch.tensor(labels)
-        print(seq_model.loss(tokens_batch['input_ids'],tokens_batch['labels']))
+        tokens_batch["labels"] = torch.tensor(labels)        
+        loss = seq_model.loss(tokens_batch['input_ids'], tokens_batch['labels'])
+        print(loss.item())
         seq_model.backward()
-
-
 
